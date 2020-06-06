@@ -1,0 +1,27 @@
+﻿<Module>
+  <Name value="RepopulateCalradia Prisoner"/>
+  <Id value="zenDzeeMods_RepopulateCalradia_Prisoner"/>
+  <Version value="v1.0.0"/>
+  <SingleplayerModule value="true"/>
+  <MultiplayerModule value="false"/>
+  <DependedModules>
+    <DependedModule Id="Native"/>
+    <DependedModule Id="SandBoxCore"/>
+    <DependedModule Id="Sandbox"/>
+    <DependedModule Id="StoryMode" />
+    <DependedModule Id="CustomBattle" />
+    <DependedModule Id="zenDzeeMods_RepopulateCalradia_Common" />
+  </DependedModules>
+  <SubModules>
+    <SubModule>
+      <Name value="zenDzeeMods_RepopulateCalradia_Prisoner"/>
+      <DLLName value="zenDzeeMods_RepopulateCalradia_Prisoner.dll"/>
+      <SubModuleClassType value="zenDzeeMods_RepopulateCalradia_Prisoner.SubModule"/>
+      <Tags>
+        <Tag key="DedicatedServerType" value="none" />
+        <Tag key="IsNoRenderModeElement" value="false" />
+      </Tags>
+    </SubModule>
+  </SubModules>
+  <Xmls/>
+</Module>

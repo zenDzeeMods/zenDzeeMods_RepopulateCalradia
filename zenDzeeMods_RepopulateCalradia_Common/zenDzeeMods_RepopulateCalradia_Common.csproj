@@ -1,0 +1,93 @@
+﻿<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!-- Main Project Properties -->
+  <PropertyGroup>
+    <MNB2DIR>C:\Games_steam\steam\steamapps\common\Mount &amp; Blade II Bannerlord</MNB2DIR>
+    <MOD_ID>zenDzeeMods_RepopulateCalradia_Common</MOD_ID>
+    <MOD_OUTDIR>$(MNB2DIR)\Modules</MOD_OUTDIR>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <PlatformTarget Condition=" '$(PlatformTarget)' == '' ">x64</PlatformTarget>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{184AE7E7-52C7-4372-AE50-AC378C5BC226}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>$(MOD_ID)</RootNamespace>
+    <AssemblyName>$(MOD_ID)</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <!-- Debug Configuration Properties -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>$(MOD_OUTDIR)\$(MOD_ID)\bin\Win64_Shipping_Client</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Release Configuration Properties -->
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>$(MOD_OUTDIR)\$(MOD_ID)\bin\Win64_Shipping_Client</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Debugging Properties -->
+  <PropertyGroup>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(MNB2DIR)\bin\Win64_Shipping_Client\Bannerlord.exe</StartProgram>
+    <StartArguments>/singleplayer _MODULES_*Native*SandBoxCore*SandBox*StoryMode*CustomBattle*$(MOD_ID)*_MODULES_</StartArguments>
+    <StartWorkingDirectory>$(MNB2DIR)\bin\Win64_Shipping_Client</StartWorkingDirectory>
+  </PropertyGroup>
+  <!-- Bannerlord Native Assemblies -->
+  <ItemGroup>
+    <Reference Include="$(MNB2DIR)\bin\Win64_Shipping_Client\TaleWorlds*.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <!-- Bannerlord Module Assemblies  -->
+    <Reference Include="$(MNB2DIR)\Modules\Native\bin\Win64_Shipping_Client\TaleWorlds*.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="$(MNB2DIR)\Modules\SandBox\bin\Win64_Shipping_Client\SandBox*.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="$(MNB2DIR)\Modules\StoryMode\bin\Win64_Shipping_Client\StoryMode*.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="$(MNB2DIR)\Modules\CustomBattle\bin\Win64_Shipping_Client\TaleWorlds*.dll">
+      <HintPath>%(Identity)</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="0Harmony, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Lib.Harmony.2.0.1\lib\net472\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.InteropServices.RuntimeInformation" />
+  </ItemGroup>
+  <!-- Files & Classes -->
+  <ItemGroup>
+    <Compile Include="Patches\Hero_Patch.cs" />
+    <Compile Include="Patches\PregnancyCampaignBehavior_Patch_140.cs" />
+    <Compile Include="SubModule.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ZenDzeeRomanceHelper.cs" />
+    <Content Include="SubModule.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <!-- Post-Build -->
+  <PropertyGroup>
+    <PostBuildEvent>
+      xcopy /d /y "$(MSBuildProjectDirectory)\SubModule.xml" "..\..\"
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
