@@ -228,6 +228,8 @@ namespace zenDzeeMods_RepopulateCalradia_Prisoner
 
         private static void OnCharacterPortraitPopUpOpened(CharacterObject characterObject)
         {
+            if (characterObject == null || LocationComplex.Current == null) return;
+
             Location locationOfCharacter = LocationComplex.Current.GetLocationOfCharacter(characterObject.HeroObject);
 
             if (!characterObject.HeroObject.IsPrisoner) return;
@@ -235,10 +237,7 @@ namespace zenDzeeMods_RepopulateCalradia_Prisoner
             heroToTalk = characterObject.HeroObject;
 
             MenuContext menuContext = Campaign.Current.CurrentMenuContext;
-            if (menuContext == null)
-            {
-                return;
-            }
+            if (menuContext == null) return;
 
             GameOverlays.MenuOverlayType menuOverlayType = Campaign.Current.GameMenuManager.GetMenuOverlayType(menuContext);
 
