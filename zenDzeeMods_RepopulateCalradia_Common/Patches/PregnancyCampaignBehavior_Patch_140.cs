@@ -9,9 +9,10 @@ namespace zenDzeeMods_RepopulateCalradia_Common.Patches
     internal class PregnancyCampaignBehavior_Patch_140
     {
 
+        [HarmonyPrefix]
         [HarmonyPatch("DailyTickHero", MethodType.Normal)]
         [HarmonyPriority(Priority.VeryHigh)]
-        public static void Prefix(ref Hero hero)
+        public static void Prefix_DailyTickHero(ref Hero hero)
         {
             if (!hero.IsFemale || hero.IsDead || hero.Age < 18f || hero.IsPregnant)
             {
@@ -53,9 +54,10 @@ namespace zenDzeeMods_RepopulateCalradia_Common.Patches
         }
 
 
+        [HarmonyPostfix]
         [HarmonyPatch("DailyTickHero", MethodType.Normal)]
         [HarmonyPriority(Priority.VeryLow)]
-        public static void Postfix()
+        public static void Postfix_DailyTickHero()
         {
             ZenDzeeRomanceHelper.ClearFakes();
         }

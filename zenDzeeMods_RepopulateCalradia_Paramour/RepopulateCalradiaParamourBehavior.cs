@@ -1,5 +1,6 @@
 ﻿//#define ENABLE_LOGS
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TaleWorlds.CampaignSystem;
@@ -11,6 +12,8 @@ namespace zenDzeeMods_RepopulateCalradia_Paramour
 {
     internal class RepopulateCalradiaParamourBehavior : CampaignBehaviorBase
     {
+        private static float DesperateToFindSpouseAge = ZenDzeeRomanceHelper.LoversAgeMin + 10f;
+
         public override void SyncData(IDataStore dataStore)
         {
         }
@@ -53,6 +56,7 @@ namespace zenDzeeMods_RepopulateCalradia_Paramour
                     && (hero.Spouse == null
                             || hero.Spouse.IsDead
                             || (hero.Spouse.IsFemale && hero.Spouse.Age > ZenDzeeRomanceHelper.PregnancyAgeMax))
+                    && hero.Clan.Heroes.Count() < 6
                     && hero.Children.Count(c => c.IsAlive && c.Clan == hero.Clan) == 0)
             {
                 // Next day after birthday.
@@ -73,22 +77,46 @@ namespace zenDzeeMods_RepopulateCalradia_Paramour
                             }
                         }
 
+                        if (hero.Age >= DesperateToFindSpouseAge && lover == null)
+                        {
+                            list = Hero.All.Where(h => h.IsWanderer
+                                && h.CurrentSettlement != null
+                                && h.CurrentSettlement.MapFaction == hero.MapFaction
+                                && h.Clan != Clan.PlayerClan
+                                && IsHeroSuitableLoverForHero(hero, h));
+
+                            if (list != null)
+                            {
+                                lover = GetSuitableLoverForHero(hero, list);
+                                if (lover != null)
+                                {
+                                    ChangeRomanticStateAction.Apply(hero, lover, (Romance.RomanceLevelEnum)ZenDzeeRomanceHelper.RomanceLevel_Lovers);
+                                    return;
+                                }
+                            }
+                        }
+
                         // Add here other romance options
                     }
                 }
             }
         }
 
+        private static bool IsHeroSuitableLoverForHero(Hero hero, Hero lover)
+        {
+            return lover.IsFemale != hero.IsFemale
+                    && !lover.IsTemplate
+                    && lover.IsActive
+                    && lover.IsAlive
+                    && lover.Spouse == null
+                    && lover.Age >= ZenDzeeRomanceHelper.LoversAgeMin
+                    && (!lover.IsFemale || lover.Age < ZenDzeeRomanceHelper.PregnancyAgeMax)
+                    && ZenDzeeRomanceHelper.GetLover(lover) == null;
+        }
+
         private static Hero GetSuitableLoverForHero(Hero hero, IEnumerable<Hero> list)
         {
-            return list.FirstOrDefault(h => h.IsFemale != hero.IsFemale
-                    && !h.IsTemplate
-                    && h.IsActive
-                    && h.IsAlive
-                    && h.Spouse == null
-                    && h.Age >= ZenDzeeRomanceHelper.LoversAgeMin
-                    && (!h.IsFemale || h.Age < ZenDzeeRomanceHelper.PregnancyAgeMax)
-                    && ZenDzeeRomanceHelper.GetLover(h) == null);
+            return list.FirstOrDefault(h => IsHeroSuitableLoverForHero(hero, h));
         }
     }
 }

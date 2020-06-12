@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using TaleWorlds.CampaignSystem;
 
 namespace zenDzeeMods_RepopulateCalradia_Common
 {
     public class ZenDzeeRomanceHelper
     {
-        public const float LoversAgeMin = 25f;
+        public const float LoversAgeMin = 30f;
         public const float PregnancyAgeMax = 45f;
         public const int RomanceLevel_Lovers = 69;
         public const int RomanceLevel_Prisoner = -69;
@@ -57,6 +58,7 @@ namespace zenDzeeMods_RepopulateCalradia_Common
 
         internal static Hero fakeSpouse1 = null;
         internal static Hero fakeSpouse2 = null;
+        internal static Hero fakeNobleOccupation = null;
 
         public static void FakeSpouses(Hero hero1, Hero hero2)
         {
@@ -68,6 +70,12 @@ namespace zenDzeeMods_RepopulateCalradia_Common
         {
             fakeSpouse1 = null;
             fakeSpouse2 = null;
+            fakeNobleOccupation = null;
+        }
+
+        public static void FakeNoble(Hero hero)
+        {
+            fakeNobleOccupation = hero;
         }
     }
 }

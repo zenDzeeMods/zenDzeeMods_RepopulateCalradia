@@ -6,9 +6,11 @@ namespace zenDzeeMods_RepopulateCalradia_Common.Patches
     [HarmonyPatch(typeof(Hero))]
     internal class Hero_Patch
     {
+
+        [HarmonyPostfix]
         [HarmonyPatch("Spouse", MethodType.Getter)]
         [HarmonyPriority(Priority.VeryLow)]
-        public static void Postfix(Hero __instance, ref Hero __result)
+        public static void Postfix_Spouse(Hero __instance, ref Hero __result)
         {
             if (ZenDzeeRomanceHelper.fakeSpouse1 != null && __instance == ZenDzeeRomanceHelper.fakeSpouse1)
             {
@@ -19,5 +21,6 @@ namespace zenDzeeMods_RepopulateCalradia_Common.Patches
                 __result = ZenDzeeRomanceHelper.fakeSpouse1;
             }
         }
+
     }
 }

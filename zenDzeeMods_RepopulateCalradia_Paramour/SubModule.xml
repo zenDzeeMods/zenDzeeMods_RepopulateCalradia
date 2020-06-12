@@ -1,7 +1,7 @@
 ﻿<Module>
   <Name value="RepopulateCalradia Paramour"/>
   <Id value="zenDzeeMods_RepopulateCalradia_Paramour"/>
-  <Version value="v1.0.0"/>
+  <Version value="v1.0.3"/>
   <SingleplayerModule value="true"/>
   <MultiplayerModule value="false"/>
   <DependedModules>
