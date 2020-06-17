@@ -1,5 +1,5 @@
 ﻿//#define ENABLE_TESTS
-#define ENABLE_TEST_PREGNANCY
+//#define ENABLE_TEST_PREGNANCY
 
 using HarmonyLib;
 using System.Reflection;
@@ -28,19 +28,21 @@ namespace zenDzeeMods_RepopulateCalradia_Common
             }
         }
 
-#if ENABLE_TESTS
         protected override void OnGameStart(Game game, IGameStarter gameStarter)
         {
             if (game.GameType is Campaign)
             {
                 CampaignGameStarter campaignStarter = (CampaignGameStarter)gameStarter;
+                campaignStarter.AddBehavior(new FixBugsOfRepopulateCalradia());
+
+#if ENABLE_TESTS
 #if ENABLE_TEST_PREGNANCY
                 campaignStarter.AddModel(new TestPregnancyModel());
 #endif // ENABLE_TEST_PREGNANCY
+#endif // ENABLE_TESTS
             }
         }
-#endif // ENABLE_TESTS
-    }
+    } // SubModule
 
 #if ENABLE_TESTS
 

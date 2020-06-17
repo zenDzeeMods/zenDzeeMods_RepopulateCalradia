@@ -14,14 +14,14 @@ namespace zenDzeeMods_RepopulateCalradia_Common.Patches
         {
             if (isOffspringFemale)
             {
-                if (mother.IsWanderer)
+                if (mother.IsWanderer || mother.IsNotable)
                 {
                     ZenDzeeRomanceHelper.FakeNoble(mother);
                 }
             }
             else
             {
-                if (father.IsWanderer)
+                if (father.IsWanderer || father.IsNotable)
                 {
                     ZenDzeeRomanceHelper.FakeNoble(father);
                 }
