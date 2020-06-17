@@ -1,7 +1,7 @@
 ﻿<Module>
   <Name value="RepopulateCalradia Common"/>
   <Id value="zenDzeeMods_RepopulateCalradia_Common"/>
-  <Version value="v1.0.3"/>
+  <Version value="v1.0.4"/>
   <SingleplayerModule value="true"/>
   <MultiplayerModule value="false"/>
   <DependedModules>
