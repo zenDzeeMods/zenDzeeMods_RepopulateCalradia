@@ -46,12 +46,12 @@ namespace zenDzeeMods_RepopulateCalradia_Common
 
         private void FixAdoptBastard(Hero hero)
         {
-            if (!hero.Mother.IsNoble && hero.Father.IsNoble)
+            if (!hero.IsNoble && !hero.Mother.IsNoble && hero.Father.IsNoble)
             {
                 hero.IsNoble = true;
                 hero.Clan = hero.Father.Clan;
             }
-            else if (hero.Mother.IsNoble && !hero.Father.IsNoble)
+            else if (!hero.IsNoble && hero.Mother.IsNoble && !hero.Father.IsNoble)
             {
                 hero.IsNoble = true;
                 hero.Clan = hero.Mother.Clan;
