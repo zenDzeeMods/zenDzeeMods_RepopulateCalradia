@@ -34,6 +34,7 @@ namespace zenDzeeMods_RepopulateCalradia_Common
             {
                 CampaignGameStarter campaignStarter = (CampaignGameStarter)gameStarter;
                 campaignStarter.AddBehavior(new FixBugsOfRepopulateCalradia());
+                campaignStarter.AddBehavior(new AgingBehavior());
 
 #if ENABLE_TESTS
 #if ENABLE_TEST_PREGNANCY

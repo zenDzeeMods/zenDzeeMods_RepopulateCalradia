@@ -43,7 +43,22 @@ namespace zenDzeeMods_RepopulateCalradia_Prisoner
 
         private static void OnPrisonerReleased(Hero hero, IFaction arg2, EndCaptivityDetail arg3)
         {
+            if (hero == null) return;
+
             ZenDzeeRomanceHelper.EndLoverRomances(hero, ZenDzeeRomanceHelper.RomanceLevel_Prisoner);
+
+            if (hero != Hero.MainHero
+                && !Hero.MainHero.IsPrisoner)
+            {
+                MenuContext currentMenuContext = Campaign.Current.CurrentMenuContext;
+                if (currentMenuContext == null) return;
+
+                if (currentMenuContext.GameMenu.StringId == "zendzee_town_wait_menus"
+                    && ZenDzeeRomanceHelper.GetLover(Hero.MainHero, ZenDzeeRomanceHelper.RomanceLevel_Prisoner) == null)
+                {
+                    GameMenu.SwitchToMenu("town_wait_menus");
+                }
+            }
         }
 
 #if ENABLE_LOGS
@@ -196,6 +211,14 @@ namespace zenDzeeMods_RepopulateCalradia_Prisoner
                     }
                 }
             }
+
+            if (menuContext.GameMenu.StringId == "town_wait_menus")
+            {
+                if (ZenDzeeRomanceHelper.GetLover(Hero.MainHero, ZenDzeeRomanceHelper.RomanceLevel_Prisoner) != null)
+                {
+                    GameMenu.SwitchToMenu("zendzee_town_wait_menus");
+                }
+            }
         }
 
         /*
@@ -313,7 +336,7 @@ namespace zenDzeeMods_RepopulateCalradia_Prisoner
                 100, null);
 
             campaignStarter.AddWaitGameMenu("zendzee_settlement_prisoner_wait",
-                "{CAPTIVITY_TEXT}\nWaiting in captivity!!!",
+                "{=zee2A38FB4E}{CAPTIVITY_TEXT}\nThe guards dragged you into the lord's rooms. You can only hope that they will not harm you.",
                 new OnInitDelegate(settlement_wait_on_init),
                 new OnConditionDelegate(args => true),
                 null,
@@ -323,6 +346,37 @@ namespace zenDzeeMods_RepopulateCalradia_Prisoner
                 0f,
                 GameMenu.MenuFlags.none,
                 null);
+
+            campaignStarter.AddWaitGameMenu("zendzee_town_wait_menus",
+                "{=zee56CA3AF1}You are waiting in {CURRENT_SETTLEMENT}.\nHaving fun with the prisoner.",
+                null,
+                new OnConditionDelegate(game_menu_town_wait_on_condition),
+                null,
+                null,
+                GameMenu.MenuAndOptionType.WaitMenuHideProgressAndHoursOption,
+                GameOverlays.MenuOverlayType.SettlementWithBoth,
+                0f,
+                GameMenu.MenuFlags.none,
+                null);
+            campaignStarter.AddGameMenuOption("zendzee_town_wait_menus",
+                "wait_leave",
+                "{=UqDNAZqM}Stop waiting",
+                new GameMenuOption.OnConditionDelegate(game_menu_stop_waiting_at_town_on_condition),
+                delegate (MenuCallbackArgs args)
+                {
+                    if (Hero.MainHero.CurrentSettlement.IsTown)
+                    {
+                        GameMenu.SwitchToMenu("town");
+                        return;
+                    }
+                    if (Hero.MainHero.CurrentSettlement.IsCastle)
+                    {
+                        GameMenu.SwitchToMenu("castle");
+                    }
+                },
+                true,
+                -1,
+                false);
         }
 
         private static void ConsequenceGoToChambers()
@@ -406,6 +460,20 @@ namespace zenDzeeMods_RepopulateCalradia_Prisoner
             textObject.SetTextVariable("PLURAL", (captiveTimeInDays > 1) ? 1 : 0);
             textObject.SetTextVariable("SETTLEMENT_NAME", variable);
             text.SetTextVariable("CAPTIVITY_TEXT", textObject);
+        }
+
+        private static bool game_menu_town_wait_on_condition(MenuCallbackArgs args)
+        {
+            args.MenuContext.GameMenu.AllowWaitingAutomatically();
+            args.optionLeaveType = GameMenuOption.LeaveType.Wait;
+            MBTextManager.SetTextVariable("CURRENT_SETTLEMENT", Settlement.CurrentSettlement.EncyclopediaLinkWithName, false);
+            return true;
+        }
+
+        private static bool game_menu_stop_waiting_at_town_on_condition(MenuCallbackArgs args)
+        {
+            args.optionLeaveType = GameMenuOption.LeaveType.Leave;
+            return true;
         }
     }
 }

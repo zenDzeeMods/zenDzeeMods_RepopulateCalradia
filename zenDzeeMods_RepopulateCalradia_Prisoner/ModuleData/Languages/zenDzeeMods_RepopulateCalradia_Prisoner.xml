@@ -5,5 +5,7 @@
   </tags>
   <strings>
     <string id="zee427439A1" text="Go to my chambers." />
+    <string id="zee2A38FB4E" text="{CAPTIVITY_TEXT}\nThe guards dragged you into the lord's rooms. You can only hope that they will not harm you." />
+    <string id="zee56CA3AF1" text="You are waiting in {CURRENT_SETTLEMENT}.\nHaving fun with the prisoner." />
   </strings>
 </base>

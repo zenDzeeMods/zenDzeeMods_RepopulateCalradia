@@ -6,8 +6,9 @@ namespace zenDzeeMods_RepopulateCalradia_Common
 {
     public class ZenDzeeRomanceHelper
     {
-        public const float LoversAgeMin = 30f;
-        public const float PregnancyAgeMax = 45f;
+        public static float LoversAgeMin { get => 30f; }
+        public static float PregnancyAgeMax { get => 45f; }
+
         public const int RomanceLevel_Lovers = 69;
         public const int RomanceLevel_Prisoner = -69;
 

@@ -56,7 +56,7 @@ namespace zenDzeeMods_RepopulateCalradia_Paramour
                     && (hero.Spouse == null
                             || hero.Spouse.IsDead
                             || (hero.Spouse.IsFemale && hero.Spouse.Age > ZenDzeeRomanceHelper.PregnancyAgeMax))
-                    && hero.Clan.Heroes.Count() < 6
+                    && hero.Clan.Heroes.Count(h => h.IsAlive) < 6
                     && hero.Children.Count(c => c.IsAlive && c.Clan == hero.Clan) == 0)
             {
                 // Next day after birthday.
