@@ -35,12 +35,27 @@ namespace zenDzeeMods_RepopulateCalradia_Common
 
         private void FixBastardOccupation(Hero hero)
         {
-            if (hero.IsNoble && hero.IsNotable)
+            if (hero.IsNoble && (hero.IsNotable || hero.IsWanderer))
             {
                 PropertyInfo occupationInfo = typeof(CharacterObject).GetProperty("Occupation");
                 if (occupationInfo == null) return;
-
                 occupationInfo.SetValue(hero.CharacterObject, Occupation.Lord);
+
+                FieldInfo _originCharacterInfo = typeof(CharacterObject).GetField("_originCharacter", BindingFlags.NonPublic | BindingFlags.Instance);
+                if (_originCharacterInfo != null)
+                {
+                    CharacterObject origin = null;
+                    if (hero.Mother.IsNoble)
+                    {
+                        origin = hero.Mother.CharacterObject;
+                    }
+                    else if (hero.Father.IsNoble)
+                    {
+                        origin = hero.Father.CharacterObject;
+                    }
+
+                    _originCharacterInfo.SetValue(hero.CharacterObject, origin);
+                }
             }
         }
 

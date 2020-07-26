@@ -53,12 +53,7 @@ namespace zenDzeeMods_RepopulateCalradia_Common
         public override float PregnancyDurationInDays => 2f;
         public override float GetDailyChanceOfPregnancyForHero(Hero hero)
         {
-            if (hero.IsHumanPlayerCharacter)
-            {
-                return 1f;
-            }
-
-            return base.GetDailyChanceOfPregnancyForHero(hero);
+            return 1f;
         }
     }
 #endif // ENABLE_TEST_PREGNANCY
